@@ -1,0 +1,63 @@
+// Coldsnap — система холода. Порт датапака Coldsnap (AuraAcorn) на Paper/Purpur 1.21.11.
+// Снег и погода полностью ванильные: плагин их не меняет.
+// Формат файла — Jumper Config (.jmc). После правки: /coldsnap reload
+
+// Как часто (в тиках) пересчитывать температуру игрока. 20 тиков = 1 секунда.
+// Игроки распределяются по разным тикам, нагрузка ровная. Скорость урона от этого не зависит.
+// Рекомендуется 5–20.
+int updateInterval = 10;
+
+// Кэш позиции: стоящий на месте игрок не пересчитывается (ни одного чтения блоков).
+// Раз в refreshCycles циклов расчёт всё равно делается заново (10 × 10 тиков = 5 секунд).
+dyn cache = { enabled: true, refreshCycles: 10 };
+
+// Миры, где холод полностью выключен, например {"world_nether", "world_the_end"}.
+// Регионы WorldGuard: /rg flag <регион> coldsnap-cold deny
+dyn disabledWorlds = [];
+
+// Урон от холода. amount — в полусердечках.
+dyn damage = { enabled: true, amount: 1.0 };
+
+// Индикатор холода в action bar (⬤). Игрок может скрыть его командой /coldsnap hide
+boolean indicator = true;
+
+// Вид индикатора. symbol — символ (любой: ❄, ●, ■, 🌡, ☃ и т.д.).
+// Остальное — MiniMessage, {symbol} заменяется на символ.
+// warm — согрелся (мелькает один раз), chilly — прохладно (−5…−9), freezing — мороз (−10 и ниже),
+// chillyDamage / freezingDamage — в момент получения урона.
+dyn indicatorStyle = {
+    symbol: "⬤",
+    warm: "<gray>{symbol}</gray>",
+    chilly: "<aqua>{symbol}</aqua>",
+    freezing: "<blue>{symbol}</blue>",
+    chillyDamage: "<aqua>({symbol})</aqua>",
+    freezingDamage: "<blue>({symbol})</blue>"
+};
+
+// Тепло от одежды (за одну вещь в слоте брони).
+// leather: 0 и fur: 0 — кожанка и мех не греют, греет только ваша броня.
+// nexoItems — броня Nexo: { winter_helmet: 3, winter_boots: 2 } (ID как в /nexo give).
+// Любая вещь с меткой PersistentData coldsnap:warmth (INTEGER) греет на это число.
+dyn warmth = { leather: 1, fur: 2, nexoItems: {} };
+
+// Меховая одежда: кожаная броня + белая шерсть на кузнечном столе (без шаблона).
+dyn furArmor = {
+    recipes: true,
+    helmet: "Меховая шапка",
+    chestplate: "Меховая куртка",
+    leggings: "Меховые штаны",
+    boots: "Меховые сапоги"
+};
+
+// Дроп белой шерсти: шанс с козы и количество с белого медведя.
+dyn mobDrops = { goatWoolChance: 0.5, polarBearWool: 1 };
+
+// Сообщения. Поддерживается MiniMessage: <aqua>, <bold>, <#ff8800> и т.п.
+dyn messages = {
+    prefix: "<aqua>❄ Coldsnap</aqua> <dark_gray>»</dark_gray> ",
+    shown: "Индикатор холода включён.",
+    hidden: "Индикатор холода скрыт.",
+    reloaded: "Конфиг перезагружен.",
+    playersOnly: "Эта команда только для игроков.",
+    noPermission: "Недостаточно прав."
+};

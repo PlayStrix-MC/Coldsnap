@@ -1,0 +1,33 @@
+# Local copies of the upstream datapack and exported plugin
+/датапак/
+/плагин/
+
+# Build output
+/.gradle/
+/build/
+/out/
+/target/
+*.class
+*.jar
+!/gradle/wrapper/gradle-wrapper.jar
+*.zip
+
+# Local server data
+/run/
+/server/
+/plugins/
+*.log
+.env
+.env.*
+!.env.example
+
+# IDE and OS metadata
+/.idea/
+/.vscode/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+Thumbs.db
+Desktop.ini
