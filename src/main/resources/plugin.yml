@@ -4,7 +4,7 @@ main: ru.pavel.coldsnap.ColdsnapPlugin
 api-version: '1.21.11'
 softdepend: [WorldGuard, Nexo]
 description: Система холода (порт датапака Coldsnap by AuraAcorn) для Paper/Purpur
-authors: [AuraAcorn, pavel]
+authors: [AuraAcorn, IcyCrow]
 website: https://modrinth.com/datapack/coldsnap
 commands:
   coldsnap:
